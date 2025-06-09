@@ -18,7 +18,7 @@ public class ArticleService {
 
 	public ArticleDto.CreateResponse createArticle(ArticleDto.CreateRequest request, Long firstUserId) {
 
-		User writer = userRepository.findById(firstUserId);
+		User writer = userRepository.findById(firstUserId).orElseThrow();
 		Article article = Article.builder()
 			.title(request.title())
 			.content(request.content())
