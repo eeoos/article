@@ -1,5 +1,7 @@
 package com.codesquad.article.comment.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class CommentDto {
 
 	private CommentDto() {
@@ -12,6 +14,7 @@ public class CommentDto {
 	}
 
 	public record CreateRequest(
+		@NotBlank
 		String content
 	) {
 	}
