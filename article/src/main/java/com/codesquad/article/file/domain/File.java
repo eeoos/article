@@ -1,6 +1,8 @@
 package com.codesquad.article.file.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,7 +30,8 @@ public class File {
 	private String originalName;
 	private String storedName;
 	private Long size;
-
+	
+	@Enumerated(EnumType.STRING)
 	private FileUsageType type;
 	private Long referenceId;
 }
