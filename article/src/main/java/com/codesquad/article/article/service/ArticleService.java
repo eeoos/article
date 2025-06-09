@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.codesquad.article.article.domain.Article;
 import com.codesquad.article.article.dto.ArticleDto;
+import com.codesquad.article.article.repository.ArticleRepository;
 import com.codesquad.article.user.domain.User;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class ArticleService {
 			.writer(writer)
 			.build();
 
-		Long articleId = articleRepository.save(article);
-		return new ArticleDto.CreateResponse(articleId);
+		Article savedArticle = articleRepository.save(article);
+		return new ArticleDto.CreateResponse(savedArticle.getId());
 	}
 }
