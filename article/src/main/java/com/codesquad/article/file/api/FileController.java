@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.codesquad.article.common.dto.ApiResponse;
+import com.codesquad.article.file.dto.FileDto;
 import com.codesquad.article.file.service.FileService;
 
 import lombok.RequiredArgsConstructor;
