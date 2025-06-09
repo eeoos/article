@@ -37,7 +37,7 @@ public class UserController {
 		@Valid @RequestBody UserDto.SignInRequest request,
 		HttpSession session
 	) {
-		User user = userService.signin(request);
+		User user = userService.signIn(request);
 		session.setAttribute("loggedInUser", user);
 		return ResponseEntity.ok(ApiResponse.success(
 			new UserDto.SignInResponse(user.getId())

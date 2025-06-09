@@ -6,6 +6,7 @@ import com.codesquad.article.user.domain.User;
 import com.codesquad.article.user.dto.UserDto;
 import com.codesquad.article.user.repository.UserRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -28,5 +29,16 @@ public class UserService {
 		}
 		User savedUser = userRepository.save(user);
 		return new UserDto.CreateResponse(savedUser.getId());
+	}
+
+	public User signIn(UserDto.SignInRequest request) {
+		User user = userRepository.findByUserId(request.userId())
+			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 사용자입니다."));
+
+		if (user.getPassword().equals(request.password())) {
+			throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+		}
+
+		return user;
 	}
 }
