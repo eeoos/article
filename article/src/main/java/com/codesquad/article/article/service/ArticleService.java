@@ -6,6 +6,7 @@ import com.codesquad.article.article.domain.Article;
 import com.codesquad.article.article.dto.ArticleDto;
 import com.codesquad.article.article.repository.ArticleRepository;
 import com.codesquad.article.user.domain.User;
+import com.codesquad.article.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
