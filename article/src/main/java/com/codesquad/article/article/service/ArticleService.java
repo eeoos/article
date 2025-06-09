@@ -47,6 +47,7 @@ public class ArticleService {
 		articleRepository.deleteById(articleId);
 	}
 
+	@Transactional
 	public void updateArticle(Long articleId, ArticleDto.UpdateRequest request, Long loggedInUserId) {
 		Article article = articleRepository.findById(articleId).orElseThrow();
 
