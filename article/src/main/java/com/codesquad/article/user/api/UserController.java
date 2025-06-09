@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codesquad.article.common.dto.ApiResponse;
+import com.codesquad.article.user.dto.UserDto;
+import com.codesquad.article.user.service.UserService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
