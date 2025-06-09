@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codesquad.article.article.dto.ArticleDto;
+import com.codesquad.article.article.service.ArticleService;
 import com.codesquad.article.common.dto.ApiResponse;
 
 import jakarta.servlet.http.HttpSession;
