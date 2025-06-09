@@ -1,6 +1,7 @@
 package com.codesquad.article.comment.api;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codesquad.article.comment.dto.CommentDto;
 import com.codesquad.article.common.dto.ApiResponse;
 
 import jakarta.validation.Valid;
@@ -25,7 +27,7 @@ public class CommentController {
 	@PostMapping("/v1/issues/{issueId}/comments")
 	public ResponseEntity<ApiResponse<CommentDto.CreateResponse>> createComment(
 		@PathVariable Long issueId,
-		@Valid @RequestBody CommentDto.CreateRequest request) {
+		@Valid @RequestBody CommentDto.CreateRequest request) throws URISyntaxException {
 
 		CommentDto.CreateResponse response= commentService.createComment(issueId, request, FIRST_USER_ID);
 		URI uri = new URI("/api/v1/issues/" + response.issueId() + "comments/" + response.commentId());
