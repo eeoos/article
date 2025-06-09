@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.codesquad.article.file.domain.File;
+import com.codesquad.article.file.domain.FileUsageType;
 import com.codesquad.article.file.dto.FileDto;
 import com.codesquad.article.file.exception.ImageUploadException;
 import com.codesquad.article.file.exception.ImageValidationException;
@@ -30,12 +31,12 @@ public class FileService {
 	private static final String ALLOW_extensions = "jpg,jpeg,png,gif,webp";
 	public static final String IMAGES_URL = "/Users/jaehoonchoi/study/CodeSquad/be-article/article/article/images";
 	private final FileRepository fileRepository;
-	public FileDto.UploadResponse uploadFile(List<MultipartFile> images) {
+	public FileDto.UploadResponse uploadFile(List<MultipartFile> images, FileUsageType type, Long referenceId) {
 
 		List<Long> savedIds = images.stream().map(image -> {
 			validateFile(image);
 			try {
-				File file = createFile(image);
+				File file = createFile(image, type, referenceId);
 				fileRepository.save(file);
 				return file.getId();
 			} catch (IOException e) {
@@ -89,7 +90,7 @@ public class FileService {
 		}
 	}
 
-	private File createFile(MultipartFile file) throws IOException {
+	private File createFile(MultipartFile file, FileUsageType type, Long referenceId) throws IOException {
 		String originalName = file.getOriginalFilename();
 		String extension = getFileExtension(originalName);
 
@@ -108,7 +109,8 @@ public class FileService {
 			.originalName(originalName)
 			.storedName(storedName)
 			.size(file.getSize())
+			.type(type)
+			.referenceId(referenceId)
 			.build();
 	}
-
 }

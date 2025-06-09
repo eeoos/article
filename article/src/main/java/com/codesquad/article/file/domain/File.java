@@ -28,4 +28,6 @@ public class File {
 	private String originalName;
 	private String storedName;
 	private Long size;
+	private FileUsageType type;
+	private Long referenceId;
 }
