@@ -25,12 +25,12 @@ public class CommentController {
 	private final CommentService commentService;
 	private static final Long FIRST_USER_ID = 1L;
 
-	@PostMapping("/v1/issues/{issueId}/comments")
+	@PostMapping("/v1/articles/{articleId}/comments")
 	public ResponseEntity<ApiResponse<CommentDto.CreateResponse>> createComment(
-		@PathVariable Long issueId,
+		@PathVariable Long articleId,
 		@Valid @RequestBody CommentDto.CreateRequest request) throws URISyntaxException {
 
-		CommentDto.CreateResponse response= commentService.createComment(issueId, request, FIRST_USER_ID);
+		CommentDto.CreateResponse response= commentService.createComment(articleId, request, FIRST_USER_ID);
 		URI uri = new URI("/api/v1/issues/" + response.issueId() + "comments/" + response.commentId());
 		return ResponseEntity.created(uri).body(ApiResponse.success(
 				response
