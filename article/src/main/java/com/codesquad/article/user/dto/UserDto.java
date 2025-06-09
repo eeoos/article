@@ -21,4 +21,15 @@ public class UserDto {
 		String name
 	) {
 	}
+
+	public record SignInResponse(
+		long id
+	) {
+	}
+
+	public record SignInRequest(
+		String userId,
+		String password
+	) {
+	}
 }
