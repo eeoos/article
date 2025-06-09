@@ -21,6 +21,8 @@ import com.codesquad.article.file.dto.FileDto;
 import com.codesquad.article.file.exception.ImageUploadException;
 import com.codesquad.article.file.exception.ImageValidationException;
 import com.codesquad.article.file.repository.FileRepository;
+import com.codesquad.article.user.domain.User;
+import com.codesquad.article.user.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,12 +33,15 @@ public class FileService {
 	private static final String ALLOW_extensions = "jpg,jpeg,png,gif,webp";
 	public static final String IMAGES_URL = "/Users/jaehoonchoi/study/CodeSquad/be-article/article/article/images";
 	private final FileRepository fileRepository;
-	public FileDto.UploadResponse uploadFile(List<MultipartFile> images, String type, Long referenceId) {
+	private final UserRepository userRepository;
+	public FileDto.UploadResponse uploadFile(List<MultipartFile> images, String type, Long referenceId, Long loggedInUserId) {
+
+		User user = userRepository.findById(loggedInUserId).orElseThrow();
 
 		List<Long> savedIds = images.stream().map(image -> {
 			validateFile(image);
 			try {
-				File file = createFile(image, type, referenceId);
+				File file = createFile(image, type, referenceId, user);
 				fileRepository.save(file);
 				return file.getId();
 			} catch (IOException e) {
@@ -90,7 +95,7 @@ public class FileService {
 		}
 	}
 
-	private File createFile(MultipartFile file, String typeStr, Long referenceId) throws IOException {
+	private File createFile(MultipartFile file, String typeStr, Long referenceId, User user) throws IOException {
 
 		FileUsageType type = FileUsageType.fromTypeStr(typeStr);
 		String originalName = file.getOriginalFilename();
@@ -113,6 +118,7 @@ public class FileService {
 			.size(file.getSize())
 			.type(type)
 			.referenceId(referenceId)
+			.uploadBy(user)
 			.build();
 	}
 }
