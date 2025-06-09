@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,16 @@ public class ArticleController {
 		HttpSession session) {
 		User loggedInUser = (User)session.getAttribute("loggedInUser");
 		articleService.deleteArticle(articleId, loggedInUser.getId());
+		return ResponseEntity.noContent().build();
+	}
+
+	@PutMapping("/v1/articles/{articleId}")
+	public ResponseEntity<Void> updateArticle(
+		@PathVariable Long articleId,
+		@Valid @RequestBody ArticleDto.UpdateRequest request,
+		HttpSession session) {
+		User loggedInUser = (User)session.getAttribute("loggedInUser");
+		articleService.updateArticle(articleId, request, loggedInUser.getId());
 		return ResponseEntity.noContent().build();
 	}
 }

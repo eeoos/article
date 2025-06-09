@@ -20,4 +20,13 @@ public class ArticleDto {
 		String content
 	) {
 	}
+
+	public record UpdateRequest(
+		@NotBlank
+		String title,
+
+		@NotBlank
+		String content
+	) {
+	}
 }
