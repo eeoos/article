@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codesquad.article.article.dto.ArticleDto;
 import com.codesquad.article.article.service.ArticleService;
 import com.codesquad.article.common.dto.ApiResponse;
+import com.codesquad.article.user.domain.User;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -24,12 +26,13 @@ import lombok.RequiredArgsConstructor;
 public class ArticleController {
 
 	private final ArticleService articleService;
-	private static final Long FIRST_USER_ID = 1L;
 
 	@PostMapping("/v1/articles")
 	public ResponseEntity<ApiResponse<ArticleDto.CreateResponse>> createArticle(
-		@Valid @RequestBody ArticleDto.CreateRequest request) throws URISyntaxException {
-		ArticleDto.CreateResponse response = articleService.createArticle(request, FIRST_USER_ID);
+		@Valid @RequestBody ArticleDto.CreateRequest request,
+		HttpSession session) throws URISyntaxException {
+		User loggedInUser = (User)session.getAttribute("loggedInUser");
+		ArticleDto.CreateResponse response = articleService.createArticle(request, loggedInUser.getId());
 		URI uri = new URI("/api/v1/articles" + response.id());
 		return ResponseEntity.created(uri).body(ApiResponse.success(
 			response
@@ -37,8 +40,10 @@ public class ArticleController {
 	}
 
 	@DeleteMapping("/v1/articles/{articleId}")
-	public ResponseEntity<Void> deleteArticle(@PathVariable Long articleId) {
-		articleService.deleteArticle(articleId, FIRST_USER_ID);
+	public ResponseEntity<Void> deleteArticle(@PathVariable Long articleId,
+		HttpSession session) {
+		User loggedInUser = (User)session.getAttribute("loggedInUser");
+		articleService.deleteArticle(articleId, loggedInUser.getId());
 		return ResponseEntity.noContent().build();
 	}
 }

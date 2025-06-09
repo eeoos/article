@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.codesquad.article.comment.dto.CommentDto;
 import com.codesquad.article.comment.service.CommentService;
 import com.codesquad.article.common.dto.ApiResponse;
+import com.codesquad.article.user.domain.User;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -23,14 +25,15 @@ import lombok.RequiredArgsConstructor;
 public class CommentController {
 
 	private final CommentService commentService;
-	private static final Long FIRST_USER_ID = 1L;
 
 	@PostMapping("/v1/articles/{articleId}/comments")
 	public ResponseEntity<ApiResponse<CommentDto.CreateResponse>> createComment(
 		@PathVariable Long articleId,
-		@Valid @RequestBody CommentDto.CreateRequest request) throws URISyntaxException {
+		@Valid @RequestBody CommentDto.CreateRequest request,
+		HttpSession session) throws URISyntaxException {
+		User loggedInUser = (User)session.getAttribute("loggedInUser");
 
-		CommentDto.CreateResponse response= commentService.createComment(articleId, request, FIRST_USER_ID);
+		CommentDto.CreateResponse response= commentService.createComment(articleId, request, loggedInUser.getId());
 		URI uri = new URI("/api/v1/issues/" + response.issueId() + "comments/" + response.commentId());
 		return ResponseEntity.created(uri).body(ApiResponse.success(
 				response
