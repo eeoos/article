@@ -31,7 +31,7 @@ public class FileService {
 	private static final String ALLOW_extensions = "jpg,jpeg,png,gif,webp";
 	public static final String IMAGES_URL = "/Users/jaehoonchoi/study/CodeSquad/be-article/article/article/images";
 	private final FileRepository fileRepository;
-	public FileDto.UploadResponse uploadFile(List<MultipartFile> images, FileUsageType type, Long referenceId) {
+	public FileDto.UploadResponse uploadFile(List<MultipartFile> images, String type, Long referenceId) {
 
 		List<Long> savedIds = images.stream().map(image -> {
 			validateFile(image);
@@ -90,7 +90,9 @@ public class FileService {
 		}
 	}
 
-	private File createFile(MultipartFile file, FileUsageType type, Long referenceId) throws IOException {
+	private File createFile(MultipartFile file, String typeStr, Long referenceId) throws IOException {
+
+		FileUsageType type = FileUsageType.fromTypeStr(typeStr);
 		String originalName = file.getOriginalFilename();
 		String extension = getFileExtension(originalName);
 

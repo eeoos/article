@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.codesquad.article.common.dto.ApiResponse;
-import com.codesquad.article.file.domain.FileUsageType;
 import com.codesquad.article.file.dto.FileDto;
 import com.codesquad.article.file.service.FileService;
 
@@ -23,10 +22,10 @@ public class FileController {
 
 	private final FileService fileService;
 
-	@PostMapping(value = "/v1/images",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PostMapping(value = "/v1/images",consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
 	public ResponseEntity<ApiResponse<FileDto.UploadResponse>> uploadImages(
 		@RequestPart("images")List<MultipartFile> images,
-		@RequestPart("type") FileUsageType type,
+		@RequestPart("type") String type,
 		@RequestPart("referenceId") Long referenceId) {
 		FileDto.UploadResponse response = fileService.uploadFile(images, type,referenceId );
 		return ResponseEntity.ok(ApiResponse.success(
