@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.codesquad.article.comment.dto.CommentDto;
+import com.codesquad.article.comment.service.CommentService;
 import com.codesquad.article.common.dto.ApiResponse;
 
 import jakarta.validation.Valid;
