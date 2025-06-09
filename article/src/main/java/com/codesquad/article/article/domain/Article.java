@@ -34,4 +34,9 @@ public class Article{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User writer;
+
+	public void updateArticle(String title, String content) {
+		this.title = title;
+		this.content = content;
+	}
 }

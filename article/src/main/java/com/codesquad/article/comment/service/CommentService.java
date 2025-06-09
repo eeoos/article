@@ -23,9 +23,9 @@ public class CommentService {
 	private final UserRepository userRepository;
 
 	@Transactional
-	public CommentDto.CreateResponse createComment(Long articleId, CommentDto.CreateRequest request, Long firstUserId) {
+	public CommentDto.CreateResponse createComment(Long articleId, CommentDto.CreateRequest request, Long loggedInUserId) {
 
-		User user = userRepository.findById(firstUserId).orElseThrow(() ->new EntityNotFoundException("존재하지 않는 회원입니다."));
+		User user = userRepository.findById(loggedInUserId).orElseThrow(() ->new EntityNotFoundException("존재하지 않는 회원입니다."));
 		Article article = articleRepository.findById(articleId).orElseThrow(() ->new EntityNotFoundException("존재하지 않는 게시글입니다."));
 
 		Comment comment = Comment.builder()

@@ -21,9 +21,9 @@ public class ArticleService {
 	private final CommentRepository commentRepository;
 
 	@Transactional
-	public ArticleDto.CreateResponse createArticle(ArticleDto.CreateRequest request, Long firstUserId) {
+	public ArticleDto.CreateResponse createArticle(ArticleDto.CreateRequest request, Long loggedInUserId) {
 
-		User writer = userRepository.findById(firstUserId).orElseThrow();
+		User writer = userRepository.findById(loggedInUserId).orElseThrow();
 		Article article = Article.builder()
 			.title(request.title())
 			.content(request.content())
@@ -35,15 +35,25 @@ public class ArticleService {
 	}
 
 	@Transactional
-	public void deleteArticle(Long articleId, Long firstUserId) {
+	public void deleteArticle(Long articleId, Long loggedInUserId) {
 		Article article = articleRepository.findById(articleId)
 			.orElseThrow(() -> new EntityNotFoundException("존재하지 않는 게시글입니다."));
 		Long writerId = article.getWriter().getId();
 
-		if (writerId != firstUserId) {
+		if (writerId != loggedInUserId) {
 			throw new RuntimeException("작성자만 삭제할 수 있습니다.");
 		}
 		commentRepository.deleteByArticleId(articleId);
 		articleRepository.deleteById(articleId);
+	}
+
+	public void updateArticle(Long articleId, ArticleDto.UpdateRequest request, Long loggedInUserId) {
+		Article article = articleRepository.findById(articleId).orElseThrow();
+
+		if (article.getWriter().getId() != loggedInUserId) {
+			throw new RuntimeException("수정할 권한이 없습니다.");
+		}
+
+		article.updateArticle(request.title(), request.content());
 	}
 }
