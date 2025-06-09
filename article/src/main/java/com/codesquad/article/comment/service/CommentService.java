@@ -1,6 +1,7 @@
 package com.codesquad.article.comment.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.codesquad.article.article.domain.Article;
 import com.codesquad.article.article.repository.ArticleRepository;
@@ -21,6 +22,7 @@ public class CommentService {
 	private final ArticleRepository articleRepository;
 	private final UserRepository userRepository;
 
+	@Transactional
 	public CommentDto.CreateResponse createComment(Long articleId, CommentDto.CreateRequest request, Long firstUserId) {
 
 		User user = userRepository.findById(firstUserId).orElseThrow(() ->new EntityNotFoundException("존재하지 않는 회원입니다."));
