@@ -13,7 +13,6 @@ import com.codesquad.article.article.dto.ArticleDto;
 import com.codesquad.article.article.service.ArticleService;
 import com.codesquad.article.common.dto.ApiResponse;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +23,7 @@ public class ArticleController {
 
 	private final ArticleService articleService;
 	private static final Long FIRST_USER_ID = 1L;
-	@PostMapping("/v1/artices")
+	@PostMapping("/v1/articles")
 	public ResponseEntity<ApiResponse<ArticleDto.CreateResponse>> createArticle(
 		@Valid @RequestBody ArticleDto.CreateRequest request) throws URISyntaxException {
 		ArticleDto.CreateResponse response = articleService.createArticle(request, FIRST_USER_ID);
