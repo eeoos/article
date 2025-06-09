@@ -4,6 +4,7 @@ import com.codesquad.article.article.domain.Article;
 import com.codesquad.article.article.repository.ArticleRepository;
 import com.codesquad.article.comment.domain.Comment;
 import com.codesquad.article.comment.dto.CommentDto;
+import com.codesquad.article.comment.repository.CommentRepository;
 import com.codesquad.article.user.domain.User;
 import com.codesquad.article.user.repository.UserRepository;
 
