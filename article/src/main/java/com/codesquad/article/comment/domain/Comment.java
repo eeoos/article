@@ -1,6 +1,7 @@
 package com.codesquad.article.comment.domain;
 
 import com.codesquad.article.article.domain.Article;
+import com.codesquad.article.common.domain.BaseEntity;
 import com.codesquad.article.user.domain.User;
 
 import jakarta.persistence.Entity;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "comment")
-public class Comment {
+public class Comment extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

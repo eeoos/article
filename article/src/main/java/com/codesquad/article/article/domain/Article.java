@@ -1,5 +1,6 @@
 package com.codesquad.article.article.domain;
 
+import com.codesquad.article.common.domain.BaseEntity;
 import com.codesquad.article.user.domain.User;
 
 import jakarta.persistence.Entity;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "article")
-public class Article{
+public class Article extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
