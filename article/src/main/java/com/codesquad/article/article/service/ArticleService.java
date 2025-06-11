@@ -1,5 +1,10 @@
 package com.codesquad.article.article.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +48,7 @@ public class ArticleService {
 		if (writerId != loggedInUserId) {
 			throw new RuntimeException("작성자만 삭제할 수 있습니다.");
 		}
-		commentRepository.deleteByArticleId(articleId);
+		commentRepository.deleteByArticleId(articleId); // todo: jpa 속성으로 해결하기
 		articleRepository.deleteById(articleId);
 	}
 
@@ -56,5 +61,11 @@ public class ArticleService {
 		}
 
 		article.updateArticle(request.title(), request.content());
+	}
+
+	public ArticleDto.ListResponse getArticles(Pageable pageable) {
+
+		Page<Article> all = articleRepository.findAll(pageable);
+		return new ArticleDto.ListResponse(all.map(ArticleDto.ListItemResponse::from));
 	}
 }

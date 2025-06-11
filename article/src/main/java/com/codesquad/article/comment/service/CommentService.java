@@ -1,5 +1,7 @@
 package com.codesquad.article.comment.service;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,5 +38,11 @@ public class CommentService {
 
 		Comment savedComment = commentRepository.save(comment);
 		return new CommentDto.CreateResponse( savedComment.getArticle().getId(), savedComment.getId());
+	}
+
+	public CommentDto.ListResponse findComments(Long articleId, Pageable pageable) {
+		Slice<Comment> commentList = commentRepository.findByArticleId(articleId, pageable);
+		Slice<CommentDto.ListItemResponse> map = commentList.map(CommentDto.ListItemResponse::from);
+		return new CommentDto.ListResponse(map);
 	}
 }

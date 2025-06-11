@@ -1,5 +1,7 @@
 package com.codesquad.article.user.dto;
 
+import com.codesquad.article.user.domain.User;
+
 import jakarta.validation.constraints.NotBlank;
 
 public class UserDto {
@@ -31,5 +33,18 @@ public class UserDto {
 		String userId,
 		String password
 	) {
+	}
+
+	public record Response(
+		long id,
+		String name
+	){
+		public static Response from (User user) {
+			return new Response(
+				user.getId(),
+				user.getName()
+			);
+		}
+
 	}
 }

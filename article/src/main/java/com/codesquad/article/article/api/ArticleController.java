@@ -1,17 +1,25 @@
 package com.codesquad.article.article.api;
 
+import static org.springframework.data.domain.Sort.Direction.*;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.hibernate.query.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.codesquad.article.article.domain.Article;
 import com.codesquad.article.article.dto.ArticleDto;
 import com.codesquad.article.article.service.ArticleService;
 import com.codesquad.article.common.dto.ApiResponse;
@@ -57,4 +65,15 @@ public class ArticleController {
 		articleService.updateArticle(articleId, request, loggedInUser.getId());
 		return ResponseEntity.noContent().build();
 	}
+
+	@GetMapping("/v1/articles")
+	public ResponseEntity<ApiResponse<ArticleDto.ListResponse>> getArticles(
+		@PageableDefault(size = 20, sort = "createdAt", direction = DESC) Pageable pageable
+	) {
+		ArticleDto.ListResponse response = articleService.getArticles(pageable);
+		return ResponseEntity.ok(ApiResponse.success(
+			response
+		));
+	}
+
 }
